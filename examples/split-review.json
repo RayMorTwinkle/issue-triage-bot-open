@@ -1,0 +1,11 @@
+{
+  "issue": {
+    "title": "校正列表排序时顺带改了主题",
+    "body": "工单只要求更正排序，独立审查发现样式改动超出了范围。"
+  },
+  "policy": { "global": "dry", "project": "full", "issue": "inherit" },
+  "audit": "accept",
+  "build": "pass",
+  "reviews": { "correctness": "pass", "minimal": "fail", "consistency": "pass" },
+  "final": "pass"
+}

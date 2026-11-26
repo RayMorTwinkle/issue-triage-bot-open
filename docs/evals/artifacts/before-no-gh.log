@@ -1,0 +1,39 @@
+...................................................................................................................................................................FFF..F.............................
+======================================================================
+FAIL: test_success_clears_last_error (test_release.TestReleaseRun)
+真实发布成功后清除上次失败痕迹（dry 成功不清除）。
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/itb-eval.wa5Yxlct/baseline/tests/test_release.py", line 203, in test_success_clears_last_error
+    self.assertTrue(r["ok"] and not r["dry"])
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_workflow_failure_calls_fix_then_retry (test_release.TestReleaseRun)
+workflow 失败 → agent 修错 → 重新触发并成功。
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/itb-eval.wa5Yxlct/baseline/tests/test_release.py", line 165, in test_workflow_failure_calls_fix_then_retry
+    self.assertTrue(r["ok"])
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_workflow_yolo_success_resets_state (test_release.TestReleaseRun)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/itb-eval.wa5Yxlct/baseline/tests/test_release.py", line 147, in test_workflow_yolo_success_resets_state
+    self.assertTrue(r["ok"])
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_success_result_and_notify (test_release.TestReleaseVisibility)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/itb-eval.wa5Yxlct/baseline/tests/test_release.py", line 260, in test_success_result_and_notify
+    self.assertTrue(r.get("ok"))
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 198 tests in 48.587s
+
+FAILED (failures=4)

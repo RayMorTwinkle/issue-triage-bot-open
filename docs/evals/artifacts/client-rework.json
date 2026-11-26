@@ -1,0 +1,70 @@
+{
+  "schema": "triage-lab/v1",
+  "input": {
+    "issue": {
+      "title": "校正列表排序时顺带改了主题",
+      "body": "工单只要求更正排序，独立审查发现样式改动超出了范围。"
+    },
+    "policy": {
+      "global": "dry",
+      "project": "full",
+      "issue": "inherit"
+    },
+    "audit": "accept",
+    "build": "pass",
+    "reviews": {
+      "correctness": "pass",
+      "minimal": "fail",
+      "consistency": "pass"
+    },
+    "final": "pass"
+  },
+  "effective": {
+    "source": "project",
+    "mode": "full"
+  },
+  "trace": [
+    {
+      "stage": "权限解析",
+      "result": "full",
+      "reason": "项目覆盖"
+    },
+    {
+      "stage": "前置审核",
+      "result": "accept",
+      "reason": "采用场景提供的审核意见"
+    },
+    {
+      "stage": "分诊与修复",
+      "result": "simulated",
+      "reason": "读取模拟修复提案"
+    },
+    {
+      "stage": "构建门禁",
+      "result": "pass",
+      "reason": "采用场景提供的构建结果"
+    },
+    {
+      "stage": "边界与兼容",
+      "result": "pass",
+      "reason": "独立意见"
+    },
+    {
+      "stage": "最小改动",
+      "result": "fail",
+      "reason": "独立意见"
+    },
+    {
+      "stage": "规范与文档",
+      "result": "pass",
+      "reason": "独立意见"
+    }
+  ],
+  "plan": {
+    "tag": "simulate",
+    "publish": "skipped",
+    "reply": "skipped",
+    "merge": "skipped"
+  },
+  "outcome": "rework"
+}

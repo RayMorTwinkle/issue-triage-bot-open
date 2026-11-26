@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10251f"><meta name="description" content="在浏览器里为模拟 GitHub 工单配置权限、汇合三路审查意见并重放决策。">
+  <link rel="icon" href="data:,"><link rel="stylesheet" href="lab/style.css">
+  <script defer src="lab/engine.js"></script><script defer src="lab/scenarios.js"></script><script defer src="lab/ui.js"></script>
+  <title>Issue 分诊决策实验室 · Issue Triage Bot</title>
+</head>
+<body>
+<header><div class="nav wrap">
+  <a class="brand" href="#top"><i class="mark" aria-hidden="true"><b></b><b></b><b></b></i> Issue Triage Bot</a>
+  <nav aria-label="主导航"><a href="#lab">实验台</a><a href="#record">决策记录</a><a href="#film">短片</a></nav>
+</div></header>
+<main id="top">
+<section class="hero"><div class="wrap hero-grid">
+  <div class="hero-copy"><p class="eyebrow"><i></i> 本地模拟工作区</p><h1>Issue 分诊<br><em>决策实验室</em></h1>
+  <p class="intro">同一张工单，换一档权限或一份审查意见，<br class="desktop">看看合并决定会怎样改变。</p>
+  <a class="primary" href="#lab">进入实验台 <span aria-hidden="true">↘</span></a></div>
+  <figure class="scope"><figcaption><span>审查信号图</span><span class="legend"><i></i>已通过 <b></b>返工</span></figcaption>
+    <canvas id="scope" aria-label="三路审查从同一份修复提案出发，在终审前汇合"></canvas>
+    <div class="scope-foot"><span><i></i> 最近一次运行</span><strong id="scope-outcome">等待运行</strong></div></figure>
+</div></section>
+<noscript><p class="wrap">请启用 JavaScript 运行实验，或使用仓库中的 Node.js 离线重放命令。</p></noscript>
+<section class="wrap lab" id="lab"><div class="section-head"><div><h2>工单实验台</h2></div>
+  <p>选择合成场景，也可以直接改写工单与审查意见。</p></div>
+<form id="lab-form"><div class="columns">
+<article class="panel"><div class="panel-head"><h3>模拟工单</h3></div>
+  <label>载入场景<select id="scenario"></select></label>
+  <label>标题<input id="issue-title" required maxlength="160" autocomplete="off"></label>
+  <label>正文<textarea id="issue-body" required maxlength="4000" rows="3"></textarea></label>
+  <div class="pair"><label>前置审核<select id="audit"><option value="accept">接收</option><option value="reject">退回</option></select></label>
+  <label>构建门禁<select id="build"><option value="pass">通过</option><option value="fail">失败</option></select></label></div>
+</article>
+<article class="panel"><div class="panel-head"><h3>权限配置</h3></div>
+  <p class="helper">工单优先于项目，项目优先于全局。选择「继承上层」可撤销此处覆盖。</p>
+  <div id="policies" class="policy-list"></div>
+  <div class="effective"><span>当前生效</span><strong id="effective"></strong></div>
+  <p class="helper" id="mode-hint"></p>
+</article></div>
+<article class="panel review-panel"><div class="panel-head"><h3>独立审查与终审</h3></div>
+  <div class="review-grid" id="reviews"><label class="final-lane">终审意见<select id="final"><option value="pass">通过</option><option value="fail">返工</option></select></label></div></article>
+<div class="run-bar"><button type="submit" class="run">运行分诊 <span aria-hidden="true">→</span></button><span id="dirty" role="status"></span></div>
+</form></section>
+<section id="record" class="record"><div class="wrap">
+  <div class="section-head"><div><h2>决策记录</h2></div><button class="outline" id="export" disabled>导出 JSON ↓</button></div>
+  <article class="receipt" id="receipt" aria-live="polite">
+    <div class="receipt-title"><div><p id="source"></p><h3 id="outcome"></h3></div><p id="record-title"></p></div>
+    <div class="receipt-grid"><div><h4>环节记录</h4><ol class="trace" id="trace"></ol></div><div><h4>动作计划</h4><ul class="actions" id="actions"></ul><p class="helper">动作只在浏览器里演算。导出文件包含本次输入、阶段理由与动作计划。</p></div></div>
+  </article>
+</div></section>
+<section id="film" class="wrap resources"><div><h2>影像与复测</h2><p>释放名额的一方马上再次申请，会排到哪里？同一脚本固定线程的执行顺序，对照改动前后的闸门。</p>
+  <details class="evidence"><summary>查看六组实测记录</summary>
+    <table><caption>符合预期的次数，每组各运行五轮</caption>
+      <thead><tr><th scope="col">场景</th><th scope="col">备份</th><th scope="col">重构</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">拒绝插队</th><td>0/5</td><td>5/5</td></tr>
+        <tr><th scope="row">墙钟跳变后继续等待</th><td>0/5</td><td>5/5</td></tr>
+        <tr><th scope="row">缩容自然排空</th><td>5/5</td><td>5/5</td></tr>
+        <tr><th scope="row">超时离队</th><td>5/5</td><td>5/5</td></tr>
+        <tr><th scope="row">扩容放行</th><td>5/5</td><td>5/5</td></tr>
+        <tr><th scope="row">异常归还名额</th><td>5/5</td><td>5/5</td></tr>
+      </tbody>
+    </table>
+    <p><a href="evals/artifacts/before.json">备份逐轮 JSON</a> · <a href="evals/artifacts/after.json">重构逐轮 JSON</a></p>
+  </details>
+  <a class="textlink" href="evals/refactor-1126-report.md">阅读重构评测报告 ↗</a></div>
+  <video controls playsinline preload="metadata" aria-label="Issue Triage Bot 中文宣传片" src="media/promo.mp4">浏览器无法播放短片。</video></section>
+</main>
+<footer><div class="wrap"><a class="brand" href="#top">Issue Triage Bot</a><span>开源离线客户端 · RayMorTwinkle</span></div></footer>
+<dialog id="confirm-yolo"><form method="dialog"><p class="kicker">YOLO</p><h3>启用模拟自动合并？</h3><p>此层级生效且所有门禁通过后，动作计划将加入 Squash 合并。修改仅在本地实验台生效。</p><div><button value="cancel" autofocus>取消</button><button class="run" value="confirm">启用 YOLO</button></div></form></dialog>
+</body></html>
