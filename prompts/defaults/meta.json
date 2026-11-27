@@ -1,0 +1,143 @@
+{
+  "version": 2,
+  "stages": {
+    "audit": {
+      "model": "direct",
+      "inputs": [
+        "issue_fulltext",
+        "repo",
+        "repo_intro"
+      ],
+      "desc": "检查工单的相关性、信息质量和安全性，并选择简单或复杂处理路径。"
+    },
+    "fix_simple": {
+      "model": "configured agent",
+      "inputs": [
+        "issue_fulltext",
+        "audit_result",
+        "feedback",
+        "repo_root"
+      ],
+      "desc": "在工作区完成工单所需的最小修复，复查边界情况。"
+    },
+    "review_simple": {
+      "model": "configured agent",
+      "inputs": [
+        "issue_fulltext",
+        "diff",
+        "changed_files",
+        "repo_root"
+      ],
+      "desc": "核对工单与补丁，检查功能、边界和修改范围。"
+    },
+    "triage": {
+      "model": "configured agent",
+      "inputs": [
+        "issue_fulltext",
+        "agents_md",
+        "repo_tree",
+        "repo_root",
+        "repo"
+      ],
+      "desc": "检查仓库中的证据并判断是否接受工单。缺信息时给出明确的问题，否则将 questions 置空。"
+    },
+    "fix": {
+      "model": "configured agent",
+      "inputs": [
+        "triage_result",
+        "feedback",
+        "repo_root"
+      ],
+      "desc": "在当前工作区按分诊计划修复问题，纳入本轮反馈，并报告修改和检查结果。"
+    },
+    "merge_fix": {
+      "model": "configured agent",
+      "inputs": [
+        "issue_fulltext",
+        "repo_root",
+        "conflict_info"
+      ],
+      "desc": "在工作区解决指定的合并冲突，保留两侧的必要行为。"
+    },
+    "release_run": {
+      "model": "configured agent",
+      "inputs": [
+        "release_md",
+        "repo",
+        "repo_root",
+        "mode",
+        "trigger"
+      ],
+      "desc": "按项目发布说明准备工作区文件、版本和摘要。外部发布动作由调用方执行。"
+    },
+    "release_fix": {
+      "model": "configured agent",
+      "inputs": [
+        "repo",
+        "repo_root",
+        "workflow",
+        "failed_log"
+      ],
+      "desc": "根据失败日志，仅修复导致工作流失败的工作区文件。"
+    },
+    "init_project": {
+      "model": "configured agent",
+      "inputs": [
+        "repo",
+        "repo_root",
+        "has_agents_md",
+        "workflow_list",
+        "repo_tree"
+      ],
+      "desc": "为缺少说明的项目补充开发说明和可验证的发布方案，尊重已有配置。"
+    },
+    "review_bug": {
+      "model": "configured agent",
+      "inputs": [
+        "issue_fulltext",
+        "diff",
+        "changed_files"
+      ],
+      "desc": "检查补丁的正确性、边界条件及回归风险。"
+    },
+    "review_minimal": {
+      "model": "configured agent",
+      "inputs": [
+        "issue_fulltext",
+        "diff",
+        "changed_files"
+      ],
+      "desc": "检查补丁的改动范围，指出超出工单需求的修改。"
+    },
+    "review_style": {
+      "model": "configured agent",
+      "inputs": [
+        "diff",
+        "changed_files",
+        "agents_md"
+      ],
+      "desc": "检查实现与仓库规范、文档是否一致。"
+    },
+    "final": {
+      "model": "configured agent",
+      "inputs": [
+        "issue_fulltext",
+        "diff",
+        "three_reviews",
+        "build_result"
+      ],
+      "desc": "依据本版补丁、构建结果和全部审查意见作出裁定，未解决的问题逐项写入 fail_reasons。"
+    },
+    "reply": {
+      "model": "direct",
+      "inputs": [
+        "issue_fulltext",
+        "diff",
+        "review_summary",
+        "final_summary",
+        "fix_summary"
+      ],
+      "desc": "使用中文向报告者说明处理结果与验证范围，回复在 {{max_reply_chars}} 字以内。"
+    }
+  }
+}

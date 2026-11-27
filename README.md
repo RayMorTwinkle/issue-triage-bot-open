@@ -115,6 +115,8 @@ flowchart TD
 
 ## 🚀 3 分钟本地跑起来
 
+在仓库根目录运行 `python3 demo.py`，浏览器会打开 React 工作台。它使用本地样例完成修复、构建、三路审查和返工，五档回放均可离线体验。完整服务的入口为 `python3 bot.py`。重新构建前端可运行 `cd web-src && npm ci && npm run typecheck && npm run build`。
+
 **最快方式：**下载或克隆仓库后，直接用浏览器打开 `docs/index.html`。页面无需联网。
 
 也可以在仓库根目录通过本地 HTTP 服务打开：
@@ -146,7 +148,7 @@ node --test tests/engine.test.cjs
 - 📊 [重构评测报告与原始记录](docs/evals/refactor-1126-report.md) · 🧩 [决策引擎](docs/lab/engine.js) · 🧪 [示例场景](examples/split-review.json)
 - 👋 [Ray 的个人主页](https://raymor.top) · 📜 [MIT License](LICENSE)
 
-公开仓独立实现了客户端与本地体验；生产系统的模型调用、沙箱、并发调度、账户认证与发布服务由私有仓维护。短片中的个人声线仅作为已合成作品的一部分呈现。
+公开仓包含 Python 分诊引擎、通用提示模板、React 控制台及本地演示数据。短片中的个人声线仅作为已合成作品的一部分呈现。
 
 <div align="center">
 

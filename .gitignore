@@ -3,3 +3,8 @@ __pycache__/
 node_modules/
 .env
 .env.*
+config.json
+state/
+logs/
+prompts/active/
+.pytest_cache/

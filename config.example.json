@@ -1,0 +1,20 @@
+{
+  "repo": "",
+  "repo_url": "",
+  "global_mode": "dry",
+  "poll_interval_sec": 0,
+  "web_host": "127.0.0.1",
+  "web_port": 8770,
+  "auth_enabled": true,
+  "agent_limit": 3,
+  "agent_queue_timeout_sec": 300,
+  "main_branch": "main",
+  "build_cmd": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests"
+  ]
+}
